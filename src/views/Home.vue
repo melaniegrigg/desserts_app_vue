@@ -1,18 +1,37 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <h1>{{ message }}</h1>
+    <h1> All Desserts </h1>
+    <div v-for="dessert in desserts">
+      <h2>{{dessert.name}}</h2>
+      <img v-bind:src="dessert.image_url" v-bind:alt="dessert.name" />
+    </div>
   </div>
 </template>
 
+<style>
+</style>
+
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
+import axios from "axios";
 
 export default {
-  name: 'Home',
-  components: {
-    HelloWorld
-  }
-}
+  data: function () {
+    return {
+      message: "Lets Make Dessert!",
+      desserts: [],
+    };
+  },
+  created: function () {
+    this.indexDesserts();
+  },
+  methods: {
+    indexDesserts: function () {
+      axios.get("/api/desserts").then((response) => {
+        console.log("desserts index", response);
+        this.desserts = response.data;
+      });
+    },
+  },
+};
 </script>
